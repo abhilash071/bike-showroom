@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Velocity Bikes — Bike Showroom</title>
+  <meta name="description" content="Modern bike showroom landing page template (HTML/CSS/JS)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#0ea5a4; /* teal */
+      --dark:#0f172a;
+      --muted:#64748b;
+      --card:#ffffff;
+      --glass: rgba(255,255,255,0.06);
+      --radius:14px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#f8fafc 0%, #eef2f7 100%);color:var(--dark);}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:#fff;border-bottom:1px solid #eef2f6;position:sticky;top:0;z-index:30}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;padding:48px 28px;align-items:center}
+    .hero-card{background:linear-gradient(180deg, rgba(14,165,164,0.06), rgba(14,165,164,0.02));padding:28px;border-radius:18px}
+    h1{font-size:34px;margin:0 0 8px}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    .cta{display:inline-block;background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:700}
+    .search-row{display:flex;gap:10px;margin-top:14px}
+    .search-row input, .search-row select{padding:10px 12px;border-radius:10px;border:1px solid #e6eef6;background:transparent;min-width:0}
+    .inventory{padding:24px 28px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+    .card{background:var(--card);border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(15,23,42,0.06);display:flex;flex-direction:column}
+    .bike-img{height:160px;border-radius:10px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-weight:700;color:#94a3b8}
+    .card h3{margin:10px 0 6px;font-size:18px}
+    .price{font-weight:800;color:var(--accent)}
+    .specs{color:var(--muted);font-size:13px;margin-top:6px}
+    .actions{margin-top:auto;display:flex;gap:8px}
+    button{cursor:pointer}
+    .btn-outline{background:transparent;border:1px solid #e6eef6;padding:8px 10px;border-radius:10px}
+    .btn-primary{background:var(--accent);color:#fff;padding:8px 10px;border-radius:10px;border:0}
+    footer{padding:20px 28px;background:#fff;margin-top:28px;border-top:1px solid #eef2f6}
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:80}
+    .modal{background:#fff;border-radius:12px;width:min(960px,96%);max-height:90vh;overflow:auto;padding:18px}
+    .modal-grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .thumbs{display:flex;gap:8px}
+    .thumbs img{width:72px;height:56px;object-fit:cover;border-radius:8px}
+    /* responsive */
+    @media (max-width:880px){.hero{grid-template-columns:1fr;}.modal-grid{grid-template-columns:1fr}.hero-card{order:2}}
+    /* small niceties */
+    .badge{background:var(--glass);padding:6px 8px;border-radius:999px;font-weight:700;color:var(--accent);display:inline-block}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .contact{display:flex;gap:18px;align-items:flex-start}
+    .contact form{flex:1;display:flex;flex-direction:column;gap:8px}
+    input[type=text],input[type=email],textarea{padding:10px;border-radius:10px;border:1px solid #e6eef6}
+    .map{height:220px;border-radius:12px;background:linear-gradient(135deg,#e6eef6,#f8fafc);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+    .testimonials{display:flex;gap:12px;overflow:auto;padding-bottom:6px}
+    .testi{min-width:220px;background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.04)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">VB</div>
+      <div>
+        <div style="font-weight:800">Velocity Bikes</div>
+        <div style="font-size:12px;color:var(--muted)">Premium motorcycle & e‑bike showroom</div>
+      </div>
+    </div>
+    <nav>
+      <a href="#inventory">Inventory</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+      <a class="cta" href="#contact">Book Test Ride</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <span class="badge">New arrivals</span>
+        <h1>Find your next ride — modern bikes & electric scooters</h1>
+        <p class="lead">Explore latest models, compare specs, and book test rides. Transparent pricing, easy financing, expert service.</p>
+        <div class="search-row">
+          <input id="search" placeholder="Search model, brand, or keyword" />
+          <select id="category">
+            <option value="all">All types</option>
+            <option value="motorcycle">Motorcycle</option>
+            <option value="scooter">Scooter</option>
+            <option value="ebike">E‑Bike</option>
+          </select>
+          <select id="sort">
+            <option value="popular">Sort: Popular</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+          </select>
+        </div>
+        <div style="margin-top:14px">
+          <a class="cta" id="quick-filter" href="#inventory">Shop Now</a>
+        </div>
+      </div>
+
+      <div style="padding:8px;">
+        <div style="background:#fff;border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(2,6,23,0.04)">
+          <h3 style="margin:0 0 8px">Featured bike</h3>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:120px;height:88px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#0ea5a4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800">ZRX</div>
+            <div>
+              <div style="font-weight:800">ZRX 750</div>
+              <div style="color:var(--muted);font-size:13px">Powerful roadster • ₹6,49,000</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;background:#fff;border-radius:12px;padding:12px;box-shadow:0 8px 22px rgba(2,6,23,0.03)">
+          <h4 style="margin:0 0 8px">Why choose us?</h4>
+          <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:14px">
+            <li>Authorized dealers & certified service</li>
+            <li>Easy EMI & exchange offers</li>
+            <li>Free test rides & extended warranty</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="inventory" class="inventory">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="margin:0">Available bikes</h2>
+        <div style="color:var(--muted);font-size:14px">Showing <span id="count">0</span> models</div>
+      </div>
+
+      <div class="filters">
+        <button class="btn-outline" data-filter="all">All</button>
+        <button class="btn-outline" data-filter="motorcycle">Motorcycles</button>
+        <button class="btn-outline" data-filter="scooter">Scooters</button>
+        <button class="btn-outline" data-filter="ebike">E‑Bikes</button>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section id="services" style="padding:24px 28px">
+      <h2>Services</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+        <div class="card"><strong>Workshop</strong><div class="specs">Full service, parts, and performance tuning.</div></div>
+        <div class="card"><strong>Finance</strong><div class="specs">EMI options, low downpayment, on-site approvals.</div></div>
+        <div class="card"><strong>Insurance</strong><div class="specs">Third-party & comprehensive policies + claims assistance.</div></div>
+      </div>
+    </section>
+
+    <section id="testimonials" style="padding:24px 28px">
+      <h2>Customer stories</h2>
+      <div class="testimonials" id="testi-list">
+        <div class="testi"><strong>Ravi, Hyderabad</strong><p style="margin:8px 0 0;color:var(--muted)">Great prices and very helpful staff. Test ride was smooth.</p></div>
+        <div class="testi"><strong>Meera, Pune</strong><p style="margin:8px 0 0;color:var(--muted)">Bought an e‑scooter — battery performance is top notch.</p></div>
+        <div class="testi"><strong>Anil, Delhi</strong><p style="margin:8px 0 0;color:var(--muted)">Workshop fixed my bike quickly. Recommended!</p></div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding:24px 28px">
+      <h2>Contact & Visit</h2>
+      <div class="contact">
+        <form id="contact-form">
+          <input type="text" id="name" placeholder="Your name" required />
+          <input type="email" id="email" placeholder="Email address" required />
+          <input type="text" id="phone" placeholder="Phone (optional)" />
+          <textarea id="message" rows="4" placeholder="Message (e.g. ask about a model or book a test ride)"></textarea>
+          <div style="display:flex;gap:8px">
+            <button class="btn-primary" type="submit">Send enquiry</button>
+            <button class="btn-outline" type="button" id="clear">Clear</button>
+          </div>
+        </form>
+        <div style="width:360px">
+          <div class="map">Map placeholder — replace with embedded Google Map iframe</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:10px">Showroom: 12 MG Road, Your City • Mon–Sat 9:30–7:00</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div>© <strong>Velocity Bikes</strong> — All rights reserved.</div>
+      <div style="color:var(--muted)">Made with ❤️ • Phone: +91 98XXXX XXXX</div>
+    </div>
+  </footer>
+
+  <!-- Modal (hidden initially) -->
+  <div id="modal-root" style="display:none"></div>
+
+  <script>
+    // Sample inventory data (replace with real data or API calls)
+    const bikes = [
+      {id:1, name:'ZRX 750', type:'motorcycle', price:649000, img:'', desc:'Powerful roadster, 750cc, ABS, fuel-injected.'},
+      {id:2, name:'Urban Glide', type:'scooter', price:89999, img:'', desc:'City scooter with smooth ride and storage.'},
+      {id:3, name:'Volt E‑Pro', type:'ebike', price:74990, img:'', desc:'Electric bike, 80 km range, quick charge.'},
+      {id:4, name:'Trail Hunter 250', type:'motorcycle', price:279900, img:'', desc:'Lightweight adventure bike, long travel suspension.'},
+      {id:5, name:'Commuter X', type:'scooter', price:55900, img:'', desc:'Efficient commuter scooter with low maintenance.'},
+      {id:6, name:'E‑Cruiser 500', type:'ebike', price:129990, img:'', desc:'Cruiser style e‑bike with torque assist.'}
+    ];
+
+    const grid = document.getElementById('grid');
+    const count = document.getElementById('count');
+    const searchInput = document.getElementById('search');
+    const category = document.getElementById('category');
+    const sort = document.getElementById('sort');
+
+    function formatINR(n){
+      return '₹' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    }
+
+    function render(list){
+      grid.innerHTML='';
+      count.textContent = list.length;
+      list.forEach(b =>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `
+          <div class="bike-img">${b.name.split(' ')[0]}</div>
+          <h3>${b.name}</h3>
+          <div class="price">${formatINR(b.price)}</div>
+          <div class="specs">${b.desc}</div>
+          <div class="actions">
+            <button class="btn-outline" data-id="${b.id}">Details</button>
+            <button class="btn-primary" data-id="${b.id}">Book Test Ride</button>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      const cat = category.value;
+      let out = bikes.filter(b => (cat==='all' || b.type===cat));
+      if(q) out = out.filter(b => (b.name.toLowerCase().includes(q) || b.desc.toLowerCase().includes(q)));
+      if(sort.value==='price-asc') out = out.sort((a,b)=>a.price-b.price);
+      if(sort.value==='price-desc') out = out.sort((a,b)=>b.price-a.price);
+      render(out);
+    }
+
+    // initial render
+    render(bikes);
+
+    // wire up inputs
+    document.querySelectorAll('.filters button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const f = btn.dataset.filter;
+        category.value = f;
+        applyFilters();
+      });
+    });
+    [searchInput, category, sort].forEach(el=>el.addEventListener('input', applyFilters));
+
+    // delegated click for details & booking
+    grid.addEventListener('click', (e)=>{
+      const id = e.target.dataset.id; if(!id) return;
+      const bike = bikes.find(b=>b.id==id);
+      if(e.target.classList.contains('btn-primary')){
+        openModal(bike, true);
+      } else {
+        openModal(bike, false);
+      }
+    });
+
+    // contact form (demo local behavior)
+    document.getElementById('contact-form').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      alert('Thanks! Your enquiry has been submitted. (This demo does not send email)');
+      e.target.reset();
+    });
+
+    document.getElementById('clear').addEventListener('click', ()=>document.getElementById('contact-form').reset());
+
+    // modal
+    function openModal(bike, booking=false){
+      const root = document.getElementById('modal-root');
+      root.style.display='block';
+      root.innerHTML = `
+        <div class="modal-backdrop" id="modal-backdrop">
+          <div class="modal" role="dialog" aria-modal="true">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <h3 style="margin:0">${bike.name} <span style="color:var(--muted);font-size:14px;margin-left:8px">${formatINR(bike.price)}</span></h3>
+              <button id="close-modal" class="btn-outline">Close</button>
+            </div>
+            <div class="modal-grid">
+              <div>
+                <div style="height:300px;border-radius:10px;background:linear-gradient(135deg,#e6eef6,#f8fafc);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--muted);margin-bottom:10px">Image placeholder</div>
+                <p style="color:var(--muted)">${bike.desc}</p>
+                <h4>Specifications</h4>
+                <ul style="color:var(--muted);padding-left:18px">
+                  <li>Engine / Motor: example</li>
+                  <li>Top speed / Range: example</li>
+                  <li>Brakes: ABS (if available)</li>
+                </ul>
+              </div>
+              <div style="background:#f8fafc;padding:12px;border-radius:10px">
+                ${booking ? `
+                  <h4>Book a test ride</h4>
+                  <form id="book-form">
+                    <input type="text" id="bname" placeholder="Your name" required />
+                    <input type="email" id="bemail" placeholder="Email" required />
+                    <input type="text" id="bphone" placeholder="Phone" required />
+                    <div style="display:flex;gap:8px;margin-top:8px">
+                      <button class="btn-primary" type="submit">Confirm</button>
+                      <button class="btn-outline" type="button" id="cancel-book">Cancel</button>
+                    </div>
+                  </form>
+                ` : `
+                  <h4>Quick actions</h4>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <button class="btn-primary" id="modal-book">Book Test Ride</button>
+                    <button class="btn-outline" id="modal-inquire">Send Enquiry</button>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('modal-backdrop').addEventListener('click', (ev)=>{
+        if(ev.target.id==='modal-backdrop') closeModal();
+      });
+      document.getElementById('close-modal').addEventListener('click', closeModal);
+
+      // booking form
+      const bookForm = document.getElementById('book-form');
+      if(bookForm){
+        bookForm.addEventListener('submit',(ev)=>{
+          ev.preventDefault();
+          alert('Test ride booked — we will contact you soon.');
+          closeModal();
+        });
+        document.getElementById('cancel-book').addEventListener('click', closeModal);
+      }
+
+      const modalBookBtn = document.getElementById('modal-book');
+      if(modalBookBtn){
+        modalBookBtn.addEventListener('click', ()=>{
+          // open booking small form
+          alert('Opening booking form...');
+        });
+      }
+
+      const modalInquireBtn = document.getElementById('modal-inquire');
+      if(modalInquireBtn){
+        modalInquireBtn.addEventListener('click', ()=>{
+          alert('Enquiry sent (demo).');
+          closeModal();
+        });
+      }
+    }
+
+    function closeModal(){
+      const root = document.getElementById('modal-root');
+      root.style.display='none';
+      root.innerHTML='';
+    }
+
+  </script>
+</body>
+</html>
